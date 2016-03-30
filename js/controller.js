@@ -5,39 +5,55 @@
             AnnyangService,
             GeolocationService,
             WeatherService,
-            FitbitService,
             MapService,
+            TramService,
             HueService,
             CalendarService,
             ComicService,
             GiphyService,
             TrafficService,
-            TimerService,
-            RssService,
-            $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate) {
+            $scope, $timeout, $interval, tmhDynamicLocale, $http) {
         var _this = this;
+        var DEFAULT_COMMAND_TEXT = 'Say "What can I say?" to see a list of commands...';
         $scope.listening = false;
         $scope.debug = false;
         $scope.focus = "default";
         $scope.user = {};
-        $scope.commands = [];
-        /*$translate('home.commands').then(function (translation) {
-            $scope.interimResult = translation;
-        });*/
-        $scope.interimResult = $translate.instant('home.commands');
-        $scope.layoutName = 'main';
+        $scope.commands = commands
+        $scope.interimResult = DEFAULT_COMMAND_TEXT;
+        $scope.tram = null;
 
-        $scope.fitbitEnabled = false;
-        if (typeof config.fitbit != 'undefined') {
-            $scope.fitbitEnabled = true;
-        }
+        $scope.layoutName = 'main';
 
         //set lang
         $scope.locale = config.language;
         tmhDynamicLocale.set(config.language.toLowerCase());
         moment.locale(config.language);
         console.log('moment local', moment.locale());
-        
+
+        function getTramData() {
+            $http({
+                url: 'http://widgets.vvo-online.de/abfahrtsmonitor/Abfahrten.do?hst=trachenbergerplatz&vz=0&lim=7',
+                dataType: 'json',
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }}).success(function(data, status, headers, config) {
+                   $scope.tram = data;
+                   setTramData(data);
+                }).error(function(data, status, headers, config) {
+                  console.log(JSON.stringify(data));
+                });
+        }
+
+        function setTramData(data) {
+            $scope.tram = data;
+            console.log($scope.tram);
+        }
+
+        getTramData();
+        $interval(getTramData, 20000);
+
         //Update the time
         function updateTime(){
             $scope.date = new moment();
@@ -45,10 +61,8 @@
 
         // Reset the command text
         var restCommand = function(){
-            $translate('home.commands').then(function (translation) {
-                $scope.interimResult = translation;
-            });
-        };
+          $scope.interimResult = DEFAULT_COMMAND_TEXT;
+        }
 
         _this.init = function() {
             var tick = $interval(updateTime, 1000);
@@ -94,20 +108,8 @@
                     console.log(error);
                 });
 
-                if ($scope.fitbitEnabled) {
-                    setTimeout(function() { refreshFitbitData(); }, 5000);
-                }
-            };
 
-            var refreshFitbitData = function() {
-                console.log('refreshing fitbit data');
-                FitbitService.profileSummary(function(response){
-                    $scope.fbDailyAverage = response;
-                });
-                
-                FitbitService.todaySummary(function(response){
-                    $scope.fbToday = response;
-                });
+
             };
 
             refreshMirrorData();
@@ -159,156 +161,122 @@
             };
 
             refreshComic();
+            $interval(refreshComic, 12*60*60000); // 12 hours
+
             var defaultView = function() {
                 console.debug("Ok, going to default view...");
                 $scope.focus = "default";
             }
 
-            $interval(refreshComic, 12*60*60000); // 12 hours
-
-            var refreshRss = function () {
-                console.log ("Refreshing RSS");
-                $scope.news = null;
-                RssService.refreshRssList();
-            };
-
-            var updateNews = function() {
-                $scope.news = RssService.getNews();
-                console.log ("Getting RSS");
-            };
-
-            refreshRss();
-            $interval(refreshRss, config.rss.refreshInterval * 60000);
-            
-            updateNews();
-            $interval(updateNews, 8000);  // cycle through news every 8 seconds
-
-            var addCommand = function(commandId, commandFunction){
-                var voiceId = 'commands.'+commandId+'.voice';
-                var textId = 'commands.'+commandId+'.text';
-                var descId = 'commands.'+commandId+'.description';
-                $translate([voiceId, textId, descId]).then(function (translations) {
-                    AnnyangService.addCommand(translations[voiceId], commandFunction);
-                    if (translations[textId] != '') {
-                        var command = {"text": translations[textId], "description": translations[descId]};
-                        $scope.commands.push(command);
-                    }
-                });
-            };
+            //AnnyangService.setLanguage('de-DE');
 
             // List commands
-            addCommand('list', function() {
+            AnnyangService.addCommand(commands['list']['voice'], function() {
                 console.debug("Here is a list of commands...");
                 console.log(AnnyangService.commands);
                 $scope.focus = "commands";
             });
 
-            
             // Go back to default view
-            addCommand('home', defaultView);
+            AnnyangService.addCommand(commands['home']['voice'], defaultView);
 
             // Hide everything and "sleep"
-            addCommand('sleep', function() {
+            AnnyangService.addCommand(commands['sleep']['voice'], function() {
                 console.debug("Ok, going to sleep...");
                 $scope.focus = "sleep";
             });
 
             // Go back to default view
-            addCommand('wake_up', defaultView);
+            AnnyangService.addCommand(commands['wake_up']['voice'], function(){
+                defaultView();
+            });
 
             // Hide everything and "sleep"
-            addCommand('debug', function() {
+            AnnyangService.addCommand(commands['debug']['voice'], function() {
                 console.debug("Boop Boop. Showing debug info...");
                 $scope.debug = true;
             });
-            
+
             // Show map
-            addCommand('map_show', function() {
+            AnnyangService.addCommand(commands['map_show']['voice'], function() {
                 console.debug("Going on an adventure?");
                 GeolocationService.getLocation({enableHighAccuracy: true}).then(function(geoposition){
                     console.log("Geoposition", geoposition);
                     $scope.map = MapService.generateMap(geoposition.coords.latitude+','+geoposition.coords.longitude);
                     $scope.focus = "map";
                 });
-            });
-            
+             });
+
             // Hide everything and "sleep"
-            addCommand('map_location', function(location) {
+            AnnyangService.addCommand(commands['map_location']['voice'], function(location) {
                 console.debug("Getting map of", location);
                 $scope.map = MapService.generateMap(location);
                 $scope.focus = "map";
             });
 
             // Zoom in map
-            addCommand('map_zoom_in', function() {
+            AnnyangService.addCommand(commands['map_zoom_in']['voice'], function() {
                 console.debug("Zoooooooom!!!");
                 $scope.map = MapService.zoomIn();
             });
 
-            addCommand('map_zoom_out', function() {
+            AnnyangService.addCommand(commands['map_zoom_out']['voice'], function() {
                 console.debug("Moooooooooz!!!");
                 $scope.map = MapService.zoomOut();
             });
 
-            addCommand('map_zoom_point', function(value) {
+            AnnyangService.addCommand(commands['map_zoom_point']['voice'], function(value) {
                 console.debug("Moooop!!!", value);
                 $scope.map = MapService.zoomTo(value);
             });
 
-            addCommand('map_zoom_reset', function() {
+            AnnyangService.addCommand(commands['map_zoom_reset']['voice'], function() {
                 console.debug("Zoooommmmmzzz00000!!!");
                 $scope.map = MapService.reset();
                 $scope.focus = "map";
             });
 
             // Search images
-            addCommand('images_search', function(term) {
+            AnnyangService.addCommand(commands['images_search']['voice'], function(term) {
                 console.debug("Showing", term);
             });
 
             // Change name
-            addCommand('account_set_name', function(name) {
+            AnnyangService.addCommand(commands['account_set_name']['voice'], function(name) {
                 console.debug("Hi", name, "nice to meet you");
                 $scope.user.name = name;
             });
 
             // Set a reminder
-            addCommand('reminder_insert', function(task) {
+            AnnyangService.addCommand(commands['reminder_insert']['voice'], function(task) {
                 console.debug("I'll remind you to", task);
             });
 
             // Clear reminders
-            addCommand('reminder_clear', function() {
+            AnnyangService.addCommand(commands['reminder_clear']['voice'], function() {
                 console.debug("Clearing reminders");
             });
 
             // Check the time
-            addCommand('time_show', function(task) {
+            AnnyangService.addCommand(commands['time_show']['voice'], function(task) {
                  console.debug("It is", moment().format('h:mm:ss a'));
             });
 
             // Turn lights off
-            addCommand('light_action', function(state, action) {
+            AnnyangService.addCommand(commands['light_action']['voice'], function(state, action) {
                 HueService.performUpdate(state + " " + action);
             });
 
             //Show giphy image
-            addCommand('image_giphy', function(img) {
+            AnnyangService.addCommand(commands['image_giphy']['voice'], function(img) {
                 GiphyService.init(img).then(function(){
                     $scope.gifimg = GiphyService.giphyImg();
                     $scope.focus = "gif";
                 });
             });
 
-            //Show fitbit stats (registered only if fitbit is configured in the main config)
-            if ($scope.fitbitEnabled) {
-                AnnyangService.addCommand('show my walking', function() {
-                    refreshFitbitData();
-                });
-            }
-
             // Show xkcd comic
-            addCommand('image_comic', function(state, action) {
+            AnnyangService.addCommand(commands['image_comic']['voice'], function(state, action) {
                 console.debug("Fetching a comic for you.");
                 ComicService.getXKCD().then(function(data){
                     $scope.xkcd = data.img;
@@ -317,55 +285,10 @@
             });
 
             // Show Dilbert comic
-            addCommand('image_comic_dilbert', function(state, action) {
+            AnnyangService.addCommand('Show Dilbert (comic)', function(state, action) {
                 console.debug("Fetching a Dilbert comic for you.");
                 $scope.dilbert = ComicService.getDilbert("today");  // call it with "random" for random comic
                 $scope.focus = "dilbert";
-            });
-
-            // Start timer
-            addCommand('timer_start', function(duration) {
-                console.debug("Starting timer");
-                TimerService.start(duration);
-                $scope.timer = TimerService;
-                $scope.focus = "timer";
-
-                $scope.$watch('timer.countdown', function(countdown){
-                    if (countdown === 0) {
-                        TimerService.stop();
-                        // defaultView();
-                    }
-                });
-            });
-
-            // Show timer
-            addCommand('timer_show', function() {
-              if (TimerService.running) {
-                // Update animation
-                if (TimerService.paused) {
-                  TimerService.start();
-                  TimerService.stop();
-                } else {
-                  TimerService.start();
-                }
-
-                $scope.focus = "timer";
-              }
-            });
-
-            // Stop timer
-            addCommand('timer_stop', function() {
-              if (TimerService.running && !TimerService.paused) {
-                TimerService.stop();
-              }
-            });
-
-            // Resume timer
-            addCommand('timer_resume', function() {
-              if (TimerService.running && TimerService.paused) {
-                TimerService.start();
-                $scope.focus = "timer";
-              }
             });
 
             var resetCommandTimeout;
@@ -376,16 +299,8 @@
                 $scope.interimResult = interimResult;
                 $timeout.cancel(resetCommandTimeout);
             }, function(result){
-                if(typeof result != 'undefined'){
-                    $scope.interimResult = result[0];
-                    resetCommandTimeout = $timeout(restCommand, 5000);
-                }
-            }, function(error){
-                console.log(error);
-                if(error.error == "network"){
-                    $scope.speechError = "Google Speech Recognizer is down :(";
-                    AnnyangService.abort();
-                }
+                $scope.interimResult = result[0];
+                resetCommandTimeout = $timeout(restCommand, 5000);
             });
         };
 

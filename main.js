@@ -40,13 +40,16 @@ app.on('ready', function() {
     }
   }
 
-  var browserWindowOptions = {width: 800, height: 600, icon: 'favicon.ico' , kiosk:true, autoHideMenuBar:true, darkTheme:true};
+  var browserWindowOptions = {width: 1280, height: 800, icon: 'favicon.ico' , kiosk:true, autoHideMenuBar:true, darkTheme:true,"web-preferences": {
+      "web-security": false
+    }};
   if (externalDisplay) {
     browserWindowOptions.x = externalDisplay.bounds.x + 50;
     browserWindowOptions.y = externalDisplay.bounds.y + 50
   }
 
   // Create the browser window.
+  app.commandLine.appendSwitch('disable-web-security'); // try add this line
   mainWindow = new BrowserWindow(browserWindowOptions);
 
   // and load the index.html of the app.

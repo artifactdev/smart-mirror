@@ -141,7 +141,7 @@
       recognition.onstart   = function()      { invokeCallbacks(callbacks.start); };
 
       recognition.onerror   = function(event) {
-        invokeCallbacks(callbacks.error, event);
+        invokeCallbacks(callbacks.error);
         switch (event.error) {
         case 'network':
           invokeCallbacks(callbacks.errorNetwork);

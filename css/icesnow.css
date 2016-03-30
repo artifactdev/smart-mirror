@@ -240,6 +240,36 @@ ul.calendar {
   -webkit-filter: invert(100%);
   max-width: 100%; }
 
+.tram {
+  background: black; }
+  .tram ul {
+    padding: 0; }
+    .tram ul li {
+      margin: 4px 0 8px;
+      font-size: 1em;
+      padding: 8px;
+      height: 20px;
+      list-style: none; }
+      .tram ul li:first-child {
+        border-top: 0 solid transparent; }
+      .tram ul li span {
+        color: white;
+        line-height: 18px; }
+        .tram ul li span.icon, .tram ul li span.line, .tram ul li span.destination {
+          float: left; }
+        .tram ul li span.time {
+          float: right;
+          width: 14%;
+          text-align: right;
+          font-size: 1rem; }
+        .tram ul li span.icon, .tram ul li span.line {
+          width: 20%; }
+        .tram ul li span.line {
+          padding-right: 18px;
+          text-align: right; }
+        .tram ul li span.destination {
+          width: 57%; }
+
 body {
   font-family: 'Work Sans', sans-serif;
   font-weight: 300; }
@@ -325,5 +355,3 @@ Calc
   justify-content: flex-end; }
   .middle-center h1 {
     font-size: 90px; }
-
-/*# sourceMappingURL=icesnow.css.map */

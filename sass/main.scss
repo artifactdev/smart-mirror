@@ -185,71 +185,6 @@ ul.calendar {
   font-weight: bold;
 }
 
-@keyframes reduce-dashoffset {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes increase-dashoffset {
-  from { stroke-dashoffset: 0; }
-}
-
-.timer {
-  font-size: 120px;
-  position: relative;
-}
-
-.timer-circle {
-  $size: 3.25em;
-  $stroke: 0.1em;
-  $pi: 3.1415926535;
-
-  width: $size;
-  height: $size;
-  transform: rotate(-90deg) scaleY(-1);
-  margin: 20px auto;
-  display: block;
-
-  .background,
-  .progress {
-    r: $size / 2 - $stroke;
-    cx: $size / 2;
-    cy: $size / 2;
-    fill: none;
-    stroke: #222;
-    stroke-width: $stroke;
-  }
-
-  .progress {
-    stroke-dasharray: $pi * $size;
-    stroke-dashoffset: $pi * $size;
-
-    stroke: white;
-    stroke-linecap: round;
-    animation-name: increase-dashoffset;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-  }
-
-  &.finish .progress {
-    // animation-name: reduce-dashoffset;
-    // animation-duration: 1500ms;
-    // animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.335);
-  }
-}
-
-.timer-countdown {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%) translateX(-50%);
-}
-
-.timer-duration {
-  @extend .timer-countdown;
-  top: 75%;
-  font-size: 25%;
-}
-
 .contents {
   max-width: 100%;
 }
@@ -368,3 +303,52 @@ ul.calendar {
   -webkit-filter: invert(100%);
   max-width: 100%;
 }
+
+.tram {
+    background: black;
+
+    ul {
+        padding: 0;
+
+        li {
+            margin: 4px 0 8px;
+            font-size: 1em;
+            padding: 8px;
+            height: 20px;
+            list-style: none;
+
+            &:first-child {
+                border-top: 0 solid transparent;
+            }
+            span {
+                color: white;
+                line-height: 18px;
+
+                &.icon,
+                &.line,
+                &.destination {
+                    float: left;
+                }
+                &.time {
+                    float: right;
+                    width: 14%;
+                    text-align: right;
+                    font-size: 1rem;
+                }
+                &.icon,
+                &.line {
+                    width: 20%;
+                }
+
+                &.line {
+                    padding-right: 18px;
+                    text-align: right;
+                }
+
+                &.destination {
+                    width: 57%;
+                }
+            }
+        }
+    }
+  }
