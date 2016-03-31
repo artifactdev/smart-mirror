@@ -112,7 +112,7 @@ ul.calendar {
   margin-left: auto;
   display: inline-block;
   text-align: right;
-  width: 230px; }
+  width: 280px; }
 
 .weather-today .tempreture {
   font-size: 60px; }
@@ -240,7 +240,11 @@ ul.calendar {
   max-width: 100%; }
 
 .tram {
-  background: black; }
+  background: black;
+  width: 280px;
+  margin-top: 35px; }
+  .tram h2 {
+    text-align: right; }
   .tram ul {
     padding: 0; }
     .tram ul li {
@@ -258,11 +262,11 @@ ul.calendar {
           float: left; }
         .tram ul li span.time {
           float: right;
-          width: 14%;
+          width: 18%;
           text-align: right;
           font-size: 1rem; }
         .tram ul li span.icon, .tram ul li span.line {
-          width: 20%; }
+          width: 18%; }
         .tram ul li span.line {
           padding-right: 18px;
           text-align: right; }

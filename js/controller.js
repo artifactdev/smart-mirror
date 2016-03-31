@@ -33,7 +33,7 @@
 
         function getTramData() {
             $http({
-                url: 'http://widgets.vvo-online.de/abfahrtsmonitor/Abfahrten.do?hst=trachenbergerplatz&vz=0&lim=7',
+                url: 'http://widgets.vvo-online.de/abfahrtsmonitor/Abfahrten.do?hst='+config.tram.stop+'&vz='+config.tram.vz+'&lim='+config.tram.limit+'',
                 dataType: 'json',
                 method: 'GET',
                 headers: {
