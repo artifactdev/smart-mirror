@@ -94,20 +94,23 @@ ul.calendar {
   padding: 0; }
 
 .calendar .event {
-  margin-bottom: 10px; }
+  margin-bottom: 20px; }
 .calendar span {
   display: inline-block; }
   .calendar span.day {
-    font-weight: bold;
-    width: 128px;
-    vertical-align: top; }
+    font-weight: lighter;
+    vertical-align: top;
+    display: inline; }
   .calendar span.summary {
-    max-width: 400px; }
+    max-width: 400px;
+    display: block;
+    font-weight: bold; }
 .calendar .event-details .details {
   font-size: 12px;
-  padding-left: 135px;
+  padding-right: 20px;
   font-family: 'Open Sans', sans-serif;
-  font-weight: lighter; }
+  font-weight: lighter;
+  display: inline; }
 
 .weather {
   margin-left: auto;

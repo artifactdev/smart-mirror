@@ -49,9 +49,9 @@
         <ul class="calendar fade" ng-show="focus == 'default'">
             <li class="event" ng-repeat="event in calendar">
                 <div class="event-details">
-                    <span class="day">{{event.start.format('dddd') | uppercase}}</span>
                     <span class="summary">{{event.SUMMARY}}</span>
-                    <div class="details">{{event.start.format('LLL')}}</div>
+                    <div class="details">{{event.start.format('dddd') | uppercase}}</div>
+                    <span class="day">{{event.start.format('LLL')}}</span>
                 </div>
             </li>
         </ul>
