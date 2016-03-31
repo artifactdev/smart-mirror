@@ -113,7 +113,7 @@
             };
 
             refreshMirrorData();
-            $interval(refreshMirrorData, 1500000);
+            $interval(refreshMirrorData, 108000);
 
             var greetingUpdater = function () {
                 if(!Array.isArray(config.greeting) && typeof config.greeting.midday != 'undefined') {
