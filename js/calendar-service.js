@@ -20,7 +20,7 @@
 
       return $q.all(promises).then(function(data) {
         for (var i = 0; i < promises.length; i++) {
-          parseICAL(data[i].data);
+          parseICAL(data[i].data, i);
         }
       });
     }
@@ -37,9 +37,10 @@
         }
     }
 
-    var parseICAL = function(data) {
+    var parseICAL = function(data, index) {
       //Ensure cal is empty
       var events = [];
+      console.log(index);
 
       //Clean string and split the file so we can handle it (line by line)
       var cal_array = data.replace(new RegExp("\\r", "g"), "").replace(/\n /g, "").split("\n");
@@ -99,28 +100,31 @@
           if ( type !== 'SUMMARY' || (type=='SUMMARY' && cur_event['SUMMARY'] == undefined)) {
             cur_event[type] = val;
           }
+
+          cur_event['index'] = 'calendar'+index;
+
           if (cur_event['SUMMARY'] !== undefined && cur_event['RRULE'] !== undefined &&
               cur_event['DTSTART'] !== undefined && cur_event['DTEND'] !== undefined) {
             var options = new RRule.parseString(cur_event['RRULE']);
-      			options.dtstart = cur_event.start.toDate();
-      			var event_duration = cur_event.end.diff(cur_event.start,'minutes');
-      			var rule = new RRule(options);
+            options.dtstart = cur_event.start.toDate();
+            var event_duration = cur_event.end.diff(cur_event.start,'minutes');
+            var rule = new RRule(options);
             var oneYear = new Date();
-      			oneYear.setFullYear(oneYear.getFullYear() + 1);
-      			var dates = rule.between(new Date(), oneYear, true, function (date, i){return i < 10});
-      			for (var date in dates) {
+            oneYear.setFullYear(oneYear.getFullYear() + 1);
+            var dates = rule.between(new Date(), oneYear, true, function (date, i){return i < 10});
+            for (var date in dates) {
               var recuring_event = {};
               recuring_event.SUMMARY = cur_event.SUMMARY;
-      				var dt = new Date(dates[date]);
-      				var startDate = moment(dt);
-      				var endDate = moment(dt);
+              var dt = new Date(dates[date]);
+              var startDate = moment(dt);
+              var endDate = moment(dt);
               endDate.add(event_duration, 'minutes');
               recuring_event.start = startDate;
               recuring_event.end = endDate;
               if(!contains(events, recuring_event)) {
                 events.push(recuring_event);
               }
-      			}
+            }
           }
         }
       }

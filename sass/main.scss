@@ -137,6 +137,20 @@ ul.calendar {
     font-weight: lighter;
     display: inline
   }
+
+  .event-details {
+    &.calendar1 {
+      color: white;
+    }
+
+    &.calendar2 {
+      color: #90F487;
+    }
+
+    &.calendar3 {
+      color: #E7C9FF;
+    }
+  }
 }
 
 .weather {

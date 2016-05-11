@@ -111,6 +111,12 @@ ul.calendar {
   font-family: 'Open Sans', sans-serif;
   font-weight: lighter;
   display: inline; }
+.calendar .event-details.calendar1 {
+  color: white; }
+.calendar .event-details.calendar2 {
+  color: #90F487; }
+.calendar .event-details.calendar3 {
+  color: #E7C9FF; }
 
 .weather {
   margin-left: auto;
