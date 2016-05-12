@@ -17,8 +17,8 @@
                 targetZoom = service.zoom;
             }
             return "https://maps.googleapis.com/maps/api/staticmap?center="+targetCenter+"&zoom="+targetZoom+
-            "&format=png&sensor=false&data=!5m1!1e1&scale=2&size="+window.innerWidth+
-            "x1200&maptype=roadmap&style=visibility:on|weight:1|invert_lightness:true|saturation:-100|lightness:4";
+            "&format=png&sensor=false&scale=2&size="+window.innerWidth+
+            "x1200&maptype=roadmap&style=visibility:on|weight:1|invert_lightness:true|saturation:-100|lightness:1";
         };
 
         service.zoomIn = function() {

@@ -7,7 +7,6 @@
             WeatherService,
             FitbitService,
             MapService,
-            TramService,
             HueService,
             CalendarService,
             ComicService,
@@ -15,7 +14,7 @@
             TrafficService,
             TimerService,
             ReminderService,
-            $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate) {
+            $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate, $http) {
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
@@ -128,7 +127,7 @@
                 FitbitService.profileSummary(function(response){
                     $scope.fbDailyAverage = response;
                 });
-                
+
                 FitbitService.todaySummary(function(response){
                     $scope.fbToday = response;
                 });
@@ -209,7 +208,7 @@
                 $scope.focus = "commands";
             });
 
-            
+
             // Go back to default view
             addCommand('home', defaultView);
 
@@ -227,7 +226,7 @@
                 console.debug("Boop Boop. Showing debug info...");
                 $scope.debug = true;
             });
-            
+
             // Show map
             addCommand('map_show', function() {
                 console.debug("Going on an adventure?");
@@ -237,7 +236,7 @@
                     $scope.focus = "map";
                 });
             });
-            
+
             // Hide everything and "sleep"
             addCommand('map_location', function(location) {
                 console.debug("Getting map of", location);
