@@ -95,7 +95,7 @@
             <h2>Trachenberger Platz</h2>
             <ul>
               <li ng-repeat="entry in tram">
-                <span class="line">{{entry[0]}}</span><span class="destination">{{entry[1]}}</span> <span class="time">{{entry[2]}} min</span>
+                <span class="line">{{entry[0]}}</span><span class="destination">{{entry[1]}}</span> <span class="time" ng-class="entry[2] < '6' ? 'red' : 'green'">{{entry[2]}} {{entry[2] === "" ? "" : "min"}}</span>
               </li>
             </ul>
         </div>

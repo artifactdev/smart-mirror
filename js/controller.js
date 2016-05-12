@@ -55,7 +55,6 @@
 
         function setTramData(data) {
             $scope.tram = data;
-            console.log($scope.tram);
         }
 
         getTramData();

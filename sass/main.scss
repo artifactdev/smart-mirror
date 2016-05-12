@@ -4,6 +4,9 @@
   /* EOT file for IE */
 }
 
+$green: #90F487;
+$red: #FF8E99;
+
 body {
   background-color: black;
   color: #fff;
@@ -144,7 +147,7 @@ ul.calendar {
     }
 
     &.calendar2 {
-      color: #90F487;
+      color: $green;
     }
 
     &.calendar3 {
@@ -357,6 +360,14 @@ ul.calendar {
                     width: 18%;
                     text-align: right;
                     font-size: 1rem;
+
+                    &.green {
+                      color: $green;
+                    }
+
+                    &.red {
+                      color: $red;
+                    }
                 }
                 &.icon,
                 &.line {
