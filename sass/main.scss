@@ -6,6 +6,7 @@
 
 $green: #90F487;
 $red: #FF8E99;
+$blue: #BCDDFF;
 
 body {
   background-color: black;
@@ -186,6 +187,13 @@ ul.calendar {
   .tempreture {
     display: inline-block;
     width: 60px;
+
+    &.tempreture-min {
+      color: $blue;
+    }
+    &.tempreture-max {
+      color: $red;
+    }
   }
 }
 

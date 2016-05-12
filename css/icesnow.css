@@ -150,6 +150,10 @@ ul.calendar {
   .weather-week .tempreture {
     display: inline-block;
     width: 60px; }
+    .weather-week .tempreture.tempreture-min {
+      color: #BCDDFF; }
+    .weather-week .tempreture.tempreture-max {
+      color: #FF8E99; }
 
 .weather .weather-today canvas, .weather .weather-week-day canvas {
   display: none; }
