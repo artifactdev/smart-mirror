@@ -3,7 +3,6 @@
   font-family: "HelveticaNeue-UltraLight";
   src: url("../fonts/HelveticaNeue-UltraLight.ttf");
   /* EOT file for IE */ }
-
 body {
   background-color: black;
   color: #fff;
@@ -96,7 +95,6 @@ ul.calendar {
 
 .calendar .event {
   margin-bottom: 20px; }
-
 .calendar span {
   display: inline-block; }
   .calendar span.day {
@@ -107,20 +105,16 @@ ul.calendar {
     max-width: 400px;
     display: block;
     font-weight: bold; }
-
 .calendar .event-details .details {
   font-size: 12px;
   padding-right: 20px;
   font-family: 'Open Sans', sans-serif;
   font-weight: lighter;
   display: inline; }
-
 .calendar .event-details.calendar1 {
   color: white; }
-
 .calendar .event-details.calendar2 {
   color: #90F487; }
-
 .calendar .event-details.calendar3 {
   color: #E7C9FF; }
 
@@ -205,13 +199,10 @@ ul.calendar {
 /* Animations */
 .fade.ng-hide {
   opacity: 0; }
-
 .fade.ng-hide-remove, .fade.ng-hide-add {
   display: block !important; }
-
 .fade.ng-hide-remove {
   transition: all ease 1500ms; }
-
 .fade.ng-hide-add {
   transition: all ease 500ms; }
 
@@ -292,6 +283,8 @@ ul.calendar {
             color: #90F487; }
           .tram ul li span.time.red {
             color: #FF8E99; }
+          .tram ul li span.time.orange {
+            color: #FF9859; }
         .tram ul li span.icon, .tram ul li span.line {
           width: 18%; }
         .tram ul li span.line {
@@ -359,10 +352,8 @@ Weather
 
 .weather .weather-today .icon, .weather .weather-week-day .icon-small {
   display: none; }
-
 .weather .weather-today canvas, .weather .weather-week-day canvas {
   display: inline-block; }
-
 .weather .weather-week-descriptor span {
   padding-bottom: 7px;
   margin-bottom: 7px;

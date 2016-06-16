@@ -6,6 +6,7 @@
 
 $green: #90F487;
 $red: #FF8E99;
+$orange: #FF9859;
 $blue: #BCDDFF;
 
 body {
@@ -375,6 +376,10 @@ ul.calendar {
 
                     &.red {
                       color: $red;
+                    }
+
+                    &.orange {
+                      color: $orange;
                     }
                 }
                 &.icon,
