@@ -25,6 +25,10 @@ dt {
 .grey {
   color: #999; }
 
+.center {
+  margin-left: 50%;
+  transform: translate(-50%, 0); }
+
 /* Displays */
 .sleep-cover {
   background-color: black;

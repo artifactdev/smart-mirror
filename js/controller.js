@@ -7,6 +7,7 @@
             WeatherService,
             FitbitService,
             MapService,
+            RainService,
             HueService,
             CalendarService,
             ComicService,
@@ -85,6 +86,7 @@
         _this.init = function() {
             var tick = $interval(updateTime, 1000);
             updateTime();
+            $scope.rain = RainService.generateMap();
             GeolocationService.getLocation({enableHighAccuracy: true}).then(function(geoposition){
                 console.log("Geoposition", geoposition);
                 $scope.map = MapService.generateMap(geoposition.coords.latitude+','+geoposition.coords.longitude);
@@ -386,6 +388,16 @@
                 $scope.focus = "timer";
               }
             });
+
+            addCommand('rain', function() {
+                $scope.map = RainService.generateMap();
+                $scope.focus = "rain";
+            });
+
+            // get rainMap
+            $scope.rainMap = function() {
+                return config.rain.url;
+            }
 
             var resetCommandTimeout;
             //Track when the Annyang is listening to us

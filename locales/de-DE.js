@@ -89,6 +89,11 @@ var commands = {
         "voice": "Wie spät ist es",
         "description" : "Wie spät ist es"
     },
+    "rain": {
+        "text" : "Zeige Regenradar",
+        "voice": "Zeige Regenradar",
+        "description" : "Zeige Regenradar"
+    },
     "Show Dilbert (comic)": {
 	"text" : "Dilbert Comic",
 	"voice": "Dilbert",
