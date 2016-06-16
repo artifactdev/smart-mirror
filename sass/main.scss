@@ -163,6 +163,23 @@ ul.calendar {
   }
 }
 
+.fuel {
+  &:after {
+    display: none;
+  }
+  span {
+    font-size: 26px;
+    max-width: 50%;
+    line-height: 40px;
+    color: #fff;
+
+    span {
+      color: $blue;
+      font-size: 38px;
+    }
+  }
+}
+
 .weather {
   margin-left: auto;
   display: inline-block;

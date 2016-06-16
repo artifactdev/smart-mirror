@@ -109,6 +109,11 @@
         <div class="contents-box rainmap animate-grow" ng-show="focus == 'rain'">
           <img class="contents rain animate-grow" ng-src="{{rain}}" width="550" height="512"/>
         </div>
+
+        <div class="contents-box fuel animate-grow" ng-show="focus == 'fuel'">
+
+          <span>Aktueller Spritpreis </br>{{fuelData["name"]}}, {{fuelData["street"]}} </br><span>{{fuelPrice}} €</span></span>
+        </div>
         <h3 ng-show="!(user.name === undefined)">{{user.name}}</h3>
         <!-- <div class="listening" ng-show="listening">Ready: {{focus}}</div> -->
         <div class="contents-box map animate-grow" ng-show="focus == 'map'">

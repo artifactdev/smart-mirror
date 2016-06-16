@@ -94,6 +94,11 @@ var commands = {
         "voice": "Zeige Regenradar",
         "description" : "Zeige Regenradar"
     },
+    "fuel": {
+        "text" : "Zeige Spritpreis",
+        "voice": "Zeige Spritpreis",
+        "description" : "Zeige Spritpreis"
+    },
     "Show Dilbert (comic)": {
 	"text" : "Dilbert Comic",
 	"voice": "Dilbert",

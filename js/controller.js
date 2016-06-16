@@ -394,6 +394,28 @@
                 $scope.focus = "rain";
             });
 
+            addCommand('fuel', function() {
+                $scope.fuelPrice = null;
+                //$scope.fuelPrice = FuelService.getData();
+
+                $http({
+                  method: 'GET',
+                  url: config.fuel.url
+                }).then(function successCallback(response) {
+                    var stationData = response["data"]["station"];
+                    $scope.fuelData = stationData;
+
+                    var fuelPrice =  $scope.fuelData["e5"];
+                    fuelPrice = Math.round(fuelPrice * 100) / 100
+                    $scope.fuelPrice = fuelPrice;
+
+                    console.log($scope.fuelData);
+                  }, function errorCallback(response) {
+                    console.log(response);
+                  });
+                $scope.focus = "fuel";
+            });
+
             // get rainMap
             $scope.rainMap = function() {
                 return config.rain.url;

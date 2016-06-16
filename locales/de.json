@@ -164,6 +164,11 @@
             "text": "Zeige Regenradar",
             "voice": "(Zeige) Regenradar",
             "description": "(Zeige) Regenradar"
+        },
+        "fuel": {
+            "text": "Zeige Spritpreis",
+            "voice": "(Zeige) Spritpreis",
+            "description": "(Zeige) Spritpreis"
         }
     }
 }
