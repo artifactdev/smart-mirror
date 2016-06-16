@@ -39,7 +39,7 @@ app.on('ready', function() {
     }
   }
 
-  var browserWindowOptions = {width: 1900, height: 1000, icon: 'favicon.ico' , kiosk:false, autoHideMenuBar:true, darkTheme:true,"web-preferences": {
+  var browserWindowOptions = {width: 1900, height: 1000, icon: 'favicon.ico' , kiosk:true, autoHideMenuBar:true, darkTheme:true,"web-preferences": {
       "web-security": false
     }};
   if (externalDisplay) {
