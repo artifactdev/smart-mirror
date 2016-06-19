@@ -39,6 +39,12 @@
         moment.locale(config.language);
         console.log('moment local', moment.locale());
 
+        function windowReload() {
+            setInterval(function(){
+                    location.reload();
+            }, 900000);
+        }
+
         function getTramData() {
             $http({
                 url: 'http://widgets.vvo-online.de/abfahrtsmonitor/Abfahrten.do?hst='+config.tram.stop+'&vz='+config.tram.vz+'&lim='+config.tram.limit+'',
@@ -85,6 +91,7 @@
 
         _this.init = function() {
             var tick = $interval(updateTime, 1000);
+            windowReload();
             updateTime();
             $scope.rain = RainService.generateMap();
             GeolocationService.getLocation({enableHighAccuracy: true}).then(function(geoposition){
