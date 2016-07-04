@@ -52,16 +52,14 @@ dt {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%; 
-  transition: all 0.3s ease;}
+  height: 100%;
+  transition: all 0.3s ease; }
 
 .listening {
-  box-shadow: inset 0px -40px 40px -40px #fff
-}  
+  box-shadow: inset 0px -40px 40px -40px #fff; }
 
 .not-listening {
-  box-shadow: inset 0px 0px 0px 0px #fff
-}  
+  box-shadow: inset 0px 0px 0px 0px #fff; }
 
 .interim-result {
   font-family: 'Open Sans', sans-serif; }
@@ -95,11 +93,10 @@ dt {
   margin-bottom: 20px; }
 
 .bottom-left {
-    font-family: 'Open Sans', sans-serif;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-}
+  font-family: 'Open Sans', sans-serif;
+  position: absolute;
+  bottom: 20px;
+  left: 20px; }
 
 .commands {
   width: 450px;
@@ -181,40 +178,38 @@ ul.calendar {
   .weather-week .tempreture {
     display: inline-block;
     width: 60px; }
+    .weather-week .tempreture.tempreture-min {
+      color: #BCDDFF; }
+    .weather-week .tempreture.tempreture-max {
+      color: #FF8E99; }
 
 .weather .weather-today canvas, .weather .weather-week-day canvas {
   display: none; }
 
 .fitbit {
-    height: 100%;
-}
+  height: 100%; }
 
 .fitbit-title {
-    margin-right: 10px;
-    font-size: 24px;
-}
+  margin-right: 10px;
+  font-size: 24px; }
 
 .fitbit-subtitle {
-    margin-right: 10px;
-    font-size: 20px;
-}
+  margin-right: 10px;
+  font-size: 20px; }
 
 .fitbit-item {
-    color: #ccc;
-    margin-right: 10px;
-    font-size: 16px;
-}
+  color: #ccc;
+  margin-right: 10px;
+  font-size: 16px; }
 
 .fitbit-badge {
-    width: 16px;
-    height: 16px;
-}
+  width: 16px;
+  height: 16px; }
 
 .fitbit-main {
-    display: inline-block;
-    margin-right: 10px;
-    width: 450px;
-}
+  display: inline-block;
+  margin-right: 10px;
+  width: 450px; }
 
 .traffic-information {
   text-align: right;
@@ -227,9 +222,11 @@ ul.calendar {
 @keyframes reduce-dashoffset {
   to {
     stroke-dashoffset: 0; } }
+
 @keyframes increase-dashoffset {
   from {
     stroke-dashoffset: 0; } }
+
 .timer {
   font-size: 120px;
   position: relative; }
@@ -240,22 +237,24 @@ ul.calendar {
   transform: rotate(-90deg) scaleY(-1);
   margin: 20px auto;
   display: block; }
-  .timer-circle .background,
-  .timer-circle .progress {
-    r: 1.525em;
-    cx: 1.625em;
-    cy: 1.625em;
-    stroke-width: 0.1em;
-    fill: none;
-    stroke: #222; }
-  .timer-circle .progress {
-    stroke-dasharray: 10.2101761239em;
-    stroke-dashoffset: 10.2101761239em;
-    stroke-linecap: round;
-    animation-name: increase-dashoffset;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-    stroke: white; }
+
+.timer-circle .background,
+.timer-circle .progress {
+  r: 1.525em;
+  cx: 1.625em;
+  cy: 1.625em;
+  stroke-width: 0.1em;
+  fill: none;
+  stroke: #222; }
+
+.timer-circle .progress {
+  stroke-dasharray: 10.2101761239em;
+  stroke-dashoffset: 10.2101761239em;
+  stroke-linecap: round;
+  animation-name: increase-dashoffset;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  stroke: white; }
 
 .timer-countdown, .timer-duration {
   position: absolute;
@@ -299,28 +298,26 @@ ul.calendar {
     box-shadow: inset 0 0 10px 10px #000;
     overflow: hidden; }
 
-.video {
-    width: 100%;
-    height: 680px;
-    border: none;
-    /* If you want to make the video black and white
+video {
+  width: 100%;
+  height: 680px;
+  border: none;
+  /* If you want to make the video black and white
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
-    */
-}
+    */ }
 
 .sc-container {
-	margin:auto;
-	-webkit-filter: grayscale(70%);
-	filter: grayscale(70%);
-	font-family: bold;
-}
+  margin: auto;
+  -webkit-filter: grayscale(70%);
+  filter: grayscale(70%);
+  font-family: bold; }
+
 .scWaveform {
-	background-color: #000000;
-	width: 500px;
-	-webkit-filter: invert(100%);
-	filter: invert(100%);
-}
+  background-color: #000000;
+  width: 500px;
+  -webkit-filter: invert(100%);
+  filter: invert(100%); }
 
 .color-block {
   height: 200px;
@@ -433,19 +430,15 @@ ul.calendar {
           width: 57%; }
 
 .news {
-    height: 75px; 
-    margin-bottom: 5px;
-}
+  height: 75px;
+  margin-bottom: 5px; }
 
 .news-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 12px;
-    margin-bottom: 5px;
-}
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  margin-bottom: 5px; }
 
 .news-content {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 20px;
-    margin-bottom: 55px;
-}
-
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  margin-bottom: 55px; }

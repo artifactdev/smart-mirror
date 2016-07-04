@@ -14,8 +14,10 @@
             GiphyService,
             TrafficService,
             TimerService,
+            SoundCloudService,
+            RssService,
             ReminderService,
-            $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate) {
+            $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate, $http) {
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
@@ -189,7 +191,7 @@
 
             if(typeof config.traffic != 'undefined'){
                 refreshTrafficData();
-                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);    
+                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);
             }
 
             var refreshComic = function () {
@@ -222,7 +224,7 @@
 
             refreshRss();
             $interval(refreshRss, config.rss.refreshInterval * 60000);
-            
+
             updateNews();
             $interval(updateNews, 8000);  // cycle through news every 8 seconds
 
