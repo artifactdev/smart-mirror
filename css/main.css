@@ -68,16 +68,16 @@ dt {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%; 
+  height: 100%;
   transition: all 0.3s ease;}
 
 .listening {
   box-shadow: inset 0px -40px 40px -40px #fff
-}  
+}
 
 .not-listening {
   box-shadow: inset 0px 0px 0px 0px #fff
-}  
+}
 
 .interim-result {
     font-family: 'Open Sans', sans-serif;
@@ -143,16 +143,11 @@ ul.calendar {
   display: inline-block; }
   .calendar span.day {
     font-weight: bold;
-    width: 128px;
-    vertical-align: top; }
+    vertical-align: top;
+    margin-bottom: 8px; }
   .calendar span.summary {
-    max-width: 400px; }
-.calendar .event-details .details {
-  font-size: 12px;
-  padding-right: 20px;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: lighter;
-  display: inline; }
+    max-width: 400px;
+    display: block; }
 
 .day-marker {
 	margin-top: 30px;
@@ -160,21 +155,17 @@ ul.calendar {
 .day-marker .day {
 	display: block;
 }
-
-.calendar-name {
-  display: none;
-}
-
-.show-calendar-names .calendar-name {
-  display: block;
-}
+.calendar .event-details .details {
+  font-size: 12px;
+  padding-right: 20px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: lighter;
+  display: inline; }
 
 .calendar .event-details.calendar1 {
   color: white; }
-
 .calendar .event-details.calendar2 {
   color: #90F487; }
-
 .calendar .event-details.calendar3 {
   color: #E7C9FF; }
 
@@ -192,7 +183,6 @@ ul.calendar {
 
 .weather {
   margin-left: auto;
-  display: inline-block;
   text-align: right;
   width: 230px; }
 
@@ -222,9 +212,9 @@ ul.calendar {
 .weather-week .temperature {
     display: inline-block;
     width: 60px; }
-    .weather-week .tempreture.tempreture-min {
+    .weather-week .temperature.temperature-min {
       color: #BCDDFF; }
-    .weather-week .tempreture.tempreture-max {
+    .weather-week .temperature.temperature-max {
       color: #FF8E99; }
 
 .weather .weather-today canvas,

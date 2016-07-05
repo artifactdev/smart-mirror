@@ -8,7 +8,7 @@
             WeatherService,
             FitbitService,
             MapService,
-	    RainService,
+	        RainService,
             LightService,
             CalendarService,
             ComicService,
@@ -122,7 +122,6 @@
             AutoSleepService.startAutoSleepTimer();
 
             var tick = $interval(updateTime, 1000);
-            windowReload();
             updateTime();
             $scope.rain = RainService.generateMap();
             GeolocationService.getLocation({enableHighAccuracy: true}).then(function(geoposition){
@@ -230,7 +229,7 @@
 
             if(typeof config.traffic != 'undefined'){
                 refreshTrafficData();
-                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);    
+                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);
             }
 
             var refreshComic = function () {

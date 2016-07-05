@@ -11,21 +11,6 @@
             service.currentFeed = 0;
             var currentTime = new moment();
 
-<<<<<<< HEAD
-            angular.forEach(config.rss.feeds, function(url) {
-                $http.jsonp('http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=50&callback=JSON_CALLBACK&q=' + encodeURIComponent(url)).then(function(response) {
-                    for (var i=0; i < response.data.responseData.feed.entries.length; i++){
-                        var feedEntry = {
-                            title  : response.data.responseData.feed.title,
-                            content: response.data.responseData.feed.entries[i].title,
-                            lastUpdated : currentTime,
-                        };
-                        //console.log(feedEntry);
-                        service.feed.push(feedEntry);
-                    }    
-                });
-            });
-=======
             if (typeof config.rss != 'undefined'){
                 angular.forEach(config.rss.feeds, function(url) {
                     $http.jsonp('http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=50&callback=JSON_CALLBACK&q=' + encodeURIComponent(url)).then(function(response) {
@@ -37,11 +22,10 @@
                             };
                             //console.log(feedEntry);
                             service.feed.push(feedEntry);
-                        }    
+                        }
                     });
                 });
             }
->>>>>>> 2a7af14048c495dbcffef483e31295060ea2fab8
             return service.feed;
         };
 
@@ -65,7 +49,7 @@
                     }
                     else {
                         service.currentFeed = service.currentFeed + 1;
-                    }               
+                    }
             };
             return service.feed[service.currentFeed];
         } ;
