@@ -31,11 +31,16 @@
         "intensity": {
             "increase": "heller",
             "decrease": "dunkler",
-            "max": "maximal"
+            "max": "maximal",
+            "half": "halber",
+            "quarter": "viertel",
+            "threequarter": "dreiviertel"
         },
         "action": {
             "on": "an",
-            "off": "aus"
+            "off": "aus",
+            "nightmode": "nachtmodus",
+            "reset": "zurücksetzen"
         }
     },
     "commands": {

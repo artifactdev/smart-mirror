@@ -3,21 +3,26 @@
 
     function MirrorCtrl(
             SpeechService,
+            AutoSleepService,
             GeolocationService,
             WeatherService,
             FitbitService,
             MapService,
-            RainService,
-            HueService,
+	    RainService,
+            LightService,
             CalendarService,
             ComicService,
             GiphyService,
             TrafficService,
             TimerService,
+            ReminderService,
+            SearchService,
             SoundCloudService,
             RssService,
-            ReminderService,
+            StockService,
             $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate, $http) {
+
+        // Local Scope Vars
         var _this = this;
         $scope.listening = false;
         $scope.debug = false;
@@ -25,26 +30,30 @@
         $scope.user = {};
         $scope.shownews = true;
         $scope.commands = [];
-        /*$translate('home.commands').then(function (translation) {
-            $scope.interimResult = translation;
-        });*/
         $scope.interimResult = $translate.instant('home.commands');
         $scope.layoutName = 'main';
-
         $scope.fitbitEnabled = false;
-        if (typeof config.fitbit != 'undefined') {
+        $scope.config = config;
+
+        if (typeof config.fitbit !== 'undefined') {
             $scope.fitbitEnabled = true;
         }
 
         //set lang
-        moment.locale((typeof config.language != 'undefined')?config.language.substring(0, 2).toLowerCase(): 'en');
+        moment.locale(
+          (typeof config.language !== 'undefined')?config.language.substring(0, 2).toLowerCase(): 'en',
+          {
+            calendar : {
+              sameDay : '[Today]',
+              nextDay : '[Tomorrow]',
+              nextWeek : 'dddd',
+              sameElse : 'L'
+            }
+          }
+        );
+
         console.log('moment local', moment.locale());
 
-        function windowReload() {
-            setInterval(function(){
-                    location.reload();
-            }, 900000);
-        }
 
         function getTramData() {
             $http({
@@ -81,6 +90,14 @@
         //Update the time
         function updateTime(){
             $scope.date = new moment();
+
+            // Auto wake at a specific time
+            if (typeof config.autoTimer !== 'undefined' && typeof config.autoTimer.auto_wake !== 'undefined' && config.autoTimer.auto_wake == moment().format('HH:mm:ss')) {
+                console.debug('Auto-wake', config.autoTimer.auto_wake);
+                $scope.focus = "default";
+                AutoSleepService.wake();
+                AutoSleepService.startAutoSleepTimer();
+            }
         }
 
         // Reset the command text
@@ -90,7 +107,20 @@
             });
         };
 
+        /**
+         * Register a refresh callback for a given interval (in minutes)
+         */
+        var registerRefreshInterval = function(callback, interval){
+            //Load the data initially
+            callback();
+            if(typeof interval !== 'undefined'){
+                $interval(callback, interval * 60000);
+            }
+        }
+
         _this.init = function() {
+            AutoSleepService.startAutoSleepTimer();
+
             var tick = $interval(updateTime, 1000);
             windowReload();
             updateTime();
@@ -105,7 +135,32 @@
             var playing = false, sound;
             SoundCloudService.init();
 
-            var refreshMirrorData = function() {
+            var refreshCalendar = function() {
+                CalendarService.getCalendarEvents().then(function(response) {
+                    $scope.calendar = CalendarService.getFutureEvents();
+                }, function(error) {
+                    console.log(error);
+                });
+            };
+
+            registerRefreshInterval(refreshCalendar, 25);
+
+            var refreshFitbitData = function() {
+                console.log('refreshing fitbit data');
+                FitbitService.profileSummary(function(response){
+                    $scope.fbDailyAverage = response;
+                });
+
+                FitbitService.todaySummary(function(response){
+                    $scope.fbToday = response;
+                });
+            };
+
+            if($scope.fitbitEnabled){
+                registerRefreshInterval(refreshFitbitData, 5);
+            }
+
+            var refreshWeatherData = function() {
                 //Get our location and then get the weather for our location
                 GeolocationService.getLocation({enableHighAccuracy: true}).then(function(geoposition){
                     console.log("Geoposition", geoposition);
@@ -113,9 +168,11 @@
                         $scope.currentForecast = WeatherService.currentForecast();
                         $scope.weeklyForecast = WeatherService.weeklyForecast();
                         $scope.hourlyForecast = WeatherService.hourlyForecast();
+                        $scope.minutelyForecast = WeatherService.minutelyForecast();
                         console.log("Current", $scope.currentForecast);
                         console.log("Weekly", $scope.weeklyForecast);
                         console.log("Hourly", $scope.hourlyForecast);
+                        console.log("Minutely", $scope.minutelyForecast);
 
                         var skycons = new Skycons({"color": "#aaa"});
                         skycons.add("icon_weather_current", $scope.currentForecast.iconAnimation);
@@ -131,34 +188,14 @@
                 }, function(error){
                     console.log(error);
                 });
-
-                CalendarService.getCalendarEvents().then(function(response) {
-                    $scope.calendar = CalendarService.getFutureEvents();
-                }, function(error) {
-                    console.log(error);
-                });
-
-                if ($scope.fitbitEnabled) {
-                    setTimeout(function() { refreshFitbitData(); }, 5000);
-                }
             };
 
-            var refreshFitbitData = function() {
-                console.log('refreshing fitbit data');
-                FitbitService.profileSummary(function(response){
-                    $scope.fbDailyAverage = response;
-                });
-
-                FitbitService.todaySummary(function(response){
-                    $scope.fbToday = response;
-                });
-            };
-
-            refreshMirrorData();
-            $interval(refreshMirrorData, 108000);
+            if(typeof config.forecast !== 'undefined'){
+                registerRefreshInterval(refreshWeatherData, config.forecast.refreshInterval || 2);
+            }
 
             var greetingUpdater = function () {
-                if(typeof config.greeting != 'undefined' && !Array.isArray(config.greeting) && typeof config.greeting.midday != 'undefined') {
+                if(typeof config.greeting !== 'undefined' && !Array.isArray(config.greeting) && typeof config.greeting.midday !== 'undefined') {
                     var hour = moment().hour();
                     var greetingTime = "midday";
 
@@ -176,8 +213,10 @@
                     $scope.greeting = config.greeting[Math.floor(Math.random() * config.greeting.length)];
                 }
             };
-            greetingUpdater();
-            $interval(greetingUpdater, 120000);
+
+            if(typeof config.greeting !== 'undefined'){
+                registerRefreshInterval(greetingUpdater, 60);
+            }
 
             var refreshTrafficData = function() {
                 TrafficService.getDurationForTrips().then(function(tripsWithTraffic) {
@@ -191,7 +230,7 @@
 
             if(typeof config.traffic != 'undefined'){
                 refreshTrafficData();
-                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);
+                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);    
             }
 
             var refreshComic = function () {
@@ -203,13 +242,12 @@
                 });
             };
 
-            refreshComic();
+            registerRefreshInterval(refreshComic, 12*60); // 12 hours
+
             var defaultView = function() {
                 console.debug("Ok, going to default view...");
                 $scope.focus = "default";
             }
-
-            $interval(refreshComic, 12*60*60000); // 12 hours
 
             var refreshRss = function () {
                 console.log ("Refreshing RSS");
@@ -218,15 +256,25 @@
             };
 
             var updateNews = function() {
-                $scope.shownews = false;
-                setTimeout(function(){ $scope.news = RssService.getNews(); $scope.shownews = true; }, 1000);
+                $scope.news = RssService.getNews();
             };
 
-            refreshRss();
-            $interval(refreshRss, config.rss.refreshInterval * 60000);
+            var getStock = function() {
+              StockService.getStockQuotes().then(function(result) {
+                $scope.stock = result.list.resources;
+              }, function(error) {
+                console.log(error);
+              });
+            }
 
-            updateNews();
-            $interval(updateNews, 8000);  // cycle through news every 8 seconds
+            if (typeof config.stock !== 'undefined' && config.stock.names.length) {
+              registerRefreshInterval(getStock, 30);
+            }
+
+            if(typeof config.rss !== 'undefined'){
+                registerRefreshInterval(refreshRss, config.rss.refreshInterval || 30);
+                registerRefreshInterval(updateNews, 2);
+            }
 
             var addCommand = function(commandId, commandFunction){
                 var voiceId = 'commands.'+commandId+'.voice';
@@ -234,7 +282,7 @@
                 var descId = 'commands.'+commandId+'.description';
                 $translate([voiceId, textId, descId]).then(function (translations) {
                     SpeechService.addCommand(translations[voiceId], commandFunction);
-                    if (translations[textId] != '') {
+                    if (translations[textId] !== '') {
                         var command = {"text": translations[textId], "description": translations[descId]};
                         $scope.commands.push(command);
                     }
@@ -260,6 +308,19 @@
 
             // Go back to default view
             addCommand('wake_up', defaultView);
+
+            // Turn off HDMI output
+            addCommand('screen off', function() {
+                console.debug('turning screen off');
+                AutoSleepService.sleep();
+            });
+
+            // Turn on HDMI output
+            addCommand('screen on', function() {
+                console.debug('turning screen on');
+                AutoSleepService.wake();
+                $scope.focus = "default"
+            });
 
             // Hide everything and "sleep"
             addCommand('debug', function() {
@@ -378,9 +439,9 @@
                  console.debug("It is", moment().format('h:mm:ss a'));
             });
 
-            // Turn lights off
+            // Control light
             addCommand('light_action', function(state, action) {
-                HueService.performUpdate(state + " " + action);
+                LightService.performUpdate(state + " " + action);
             });
 
             //Show giphy image
@@ -502,7 +563,7 @@
                     $timeout.cancel(resetCommandTimeout);
                 },
                 result : function(result){
-                    if(typeof result != 'undefined'){
+                    if(typeof result !== 'undefined'){
                         $scope.interimResult = result[0];
                         resetCommandTimeout = $timeout(restCommand, 5000);
                     }
@@ -527,7 +588,7 @@
         .controller('MirrorCtrl', MirrorCtrl);
 
     function themeController($scope) {
-        $scope.layoutName = (typeof config.layout != 'undefined' && config.layout)?config.layout:'main';
+        $scope.layoutName = (typeof config.layout !== 'undefined' && config.layout)?config.layout:'main';
     }
 
     angular.module('SmartMirror')
