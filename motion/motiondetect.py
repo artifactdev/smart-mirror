@@ -14,9 +14,9 @@ def signal_handler(signal, frame):
     interrupted = True
     exit(0)
 if len(sys.argv) < 2:
-  motionPin = 26
+  motionPin = 11
   ScreenTimeOut = float(0.5)
-  
+
 else:
   motionPin = int(sys.argv[1])
   ScreenTimeOut = round(float(sys.argv[2]), 2)
