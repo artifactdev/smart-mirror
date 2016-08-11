@@ -20,14 +20,14 @@ try{
   config = require(__dirname + "/config.js");
 } catch (e) {
   var error = "Unknown Error"
-  
+
   if (typeof e.code != 'undefined' && e.code == 'MODULE_NOT_FOUND') {
     error = "'config.js' not found. \nPlease ensure that you have created 'config.js' " +
       "in the root of your smart-mirror directory."
   } else if (typeof e.message != 'undefined') {
     error = "Syntax Error. \nLooks like there's an error in your config file: " + e.message
   }
-  
+
   console.log("Config Error: ", error)
   app.quit()
 }
@@ -37,7 +37,7 @@ try{
 let mainWindow
 
 function createWindow () {
-  
+
   // Get the displays and render the mirror on a secondary screen if it exists
   var atomScreen = electron.screen;
   var displays = atomScreen.getAllDisplays();
@@ -56,7 +56,7 @@ function createWindow () {
     browserWindowOptions.x = externalDisplay.bounds.x + 50
     browserWindowOptions.y = externalDisplay.bounds.y + 50
   }
-  
+
   // Create the browser window.
   mainWindow = new BrowserWindow(browserWindowOptions);
 
