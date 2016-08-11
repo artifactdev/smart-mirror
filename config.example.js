@@ -2,15 +2,8 @@ var config = {
 
     // Lenguage for the mirror
     language : "en-US",
-
-    // PIR Detection
-    motion : {
-        pin : 26, //Default pirPin is GPIO pin 26.
-        screentimeout : 5.0, //Default timeout is 5 minutes must be a float number.
-        enable : true, // Enable or disable this functionality
-        debug : true // send debug info to dev console, if debug timeout is 30 seconds (not yet working)
-    },
-	// Keyword Spotting (Hotword Detection)
+    
+    // Keyword Spotting (Hotword Detection)
     speech : {
         keyword : "Smart Mirror",
         model : "smart_mirror.pmdl", // The name of your model
@@ -85,7 +78,7 @@ var config = {
     },
     // Giphy
     giphy: {
-      key : "" // Your Gliphy API key
+      key : "dc6zaTOxFJmzC" // Your Gliphy API key
     },
     // YouTube
     youtube: {
@@ -97,11 +90,12 @@ var config = {
     },
     traffic: {
       key : "", // Bing Maps API Key
-      reload_interval : 5, // Number of minutes the information is refreshed
+      refreshInterval : 5, // Number of minutes the information is refreshed
       // An array of tips that you would like to display travel time for
       trips : [{
         mode : "Driving", // Possibilities: Driving / Transit / Walking
         origin : "", // Start of your trip. Human readable address.
+        via : "",  // [Optional] Set an intermediate goal for getting an alternate route for example
         destination : "", // Destination of your trip. Human readable address.
         name : "work", // Name of your destination ex: "work"
         /*startTime: "",
@@ -120,6 +114,11 @@ var config = {
       autoWake: '07:00:00', // When to automatically wake the screen up (7:00AM)
       'wake_cmd': '/opt/vc/bin/tvservice -p', // The binary and arguments used on your system to wake the screen
       'sleep_cmd': '/opt/vc/bin/tvservice -o', // The binary and arguments used on your system to sleep the screen
+    },
+    lastfm: {
+      key: "", // Your last.fm api key
+      user: "", // Your last.fm username
+      refreshInterval : 0.6 // Number of minutes between checks for playing track
     }
 };
 

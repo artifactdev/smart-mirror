@@ -20,6 +20,7 @@
             SoundCloudService,
             RssService,
             StockService,
+            ScrobblerService,
             $rootScope, $scope, $timeout, $interval, tmhDynamicLocale, $translate, $http) {
 
         // Local Scope Vars
@@ -44,6 +45,8 @@
           (typeof config.language !== 'undefined')?config.language.substring(0, 2).toLowerCase(): 'en',
           {
             calendar : {
+              lastWeek : '[Last] dddd',
+              lastDay : '[Yesterday]',
               sameDay : '[Today]',
               nextDay : '[Tomorrow]',
               nextWeek : 'dddd',
@@ -153,10 +156,18 @@
                 FitbitService.todaySummary(function(response){
                     $scope.fbToday = response;
                 });
+
+                FitbitService.sleepSummary(function(response){
+                    $scope.fbSleep = response;
+                });
+
+                FitbitService.deviceSummary(function(response){
+                    $scope.fbDevices = response;
+                });
             };
 
             if($scope.fitbitEnabled){
-                registerRefreshInterval(refreshFitbitData, 5);
+                registerRefreshInterval(refreshFitbitData, 60);
             }
 
             var refreshWeatherData = function() {
@@ -227,9 +238,8 @@
                 });
             };
 
-            if(typeof config.traffic != 'undefined'){
-                refreshTrafficData();
-                $interval(refreshTrafficData, config.traffic.reload_interval * 60000);
+            if(typeof config.traffic !== 'undefined'){
+                registerRefreshInterval(refreshTrafficData, config.traffic.refreshInterval || 5);
             }
 
             var refreshComic = function () {
@@ -251,7 +261,10 @@
             var refreshRss = function () {
                 console.log ("Refreshing RSS");
                 $scope.news = null;
-                RssService.refreshRssList();
+                RssService.refreshRssList().then(function() {
+                  $scope.news = RssService.getNews();
+                });
+
             };
 
             var updateNews = function() {
@@ -260,11 +273,17 @@
 
             var getStock = function() {
               StockService.getStockQuotes().then(function(result) {
-                $scope.stock = result.list.resources;
+                var stock = [];
+                if (result.query.results.quote instanceof Array) {
+                  stock = stock.concat(result.query.results.quote);
+                } else {
+                  stock.push(result.query.results.quote);
+                }
+                $scope.stock = stock;
               }, function(error) {
                 console.log(error);
               });
-            }
+            }    
 
             if (typeof config.stock !== 'undefined' && config.stock.names.length) {
               registerRefreshInterval(getStock, 30);
@@ -274,6 +293,33 @@
                 registerRefreshInterval(refreshRss, config.rss.refreshInterval || 30);
                 registerRefreshInterval(updateNews, 2);
             }
+
+            var getScrobblingTrack = function(){
+                ScrobblerService.getCurrentTrack().then(function(track) {
+                    $scope.track = track;
+                });
+            }
+
+            if(typeof config.lastfm !== 'undefined' && typeof config.lastfm.key !== 'undefined' && config.lastfm.user !== 'undefined'){
+                registerRefreshInterval(getScrobblingTrack, config.lastfm.refreshInterval || 0.6)
+            }
+
+            var refreshRss = function () {
+                console.log ("Refreshing RSS");
+                $scope.news = null;
+                RssService.refreshRssList();
+            };
+
+            var updateNews = function() {
+                $scope.shownews = false;
+                setTimeout(function(){ $scope.news = RssService.getNews(); $scope.shownews = true; }, 1000);
+            };
+
+            refreshRss();
+            $interval(refreshRss, config.rss.refreshInterval * 60000);
+            
+            updateNews();
+            $interval(updateNews, 8000);  // cycle through news every 8 seconds
 
             var addCommand = function(commandId, commandFunction){
                 var voiceId = 'commands.'+commandId+'.voice';
@@ -453,7 +499,7 @@
 
             //Show fitbit stats (registered only if fitbit is configured in the main config)
             if ($scope.fitbitEnabled) {
-                SpeechService.addCommand('show my walking', function() {
+                addCommand('show_my_walking', function() {
                     refreshFitbitData();
                 });
             }

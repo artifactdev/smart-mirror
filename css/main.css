@@ -57,26 +57,27 @@ dt {
 }
 
 .container {
-  z-index: -1;
-  /* so things are still selectable */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  transition: all 0.3s ease;}
+    z-index: -1;
+    /* so things are still selectable */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
 
 .listening {
-  box-shadow: inset 0px -40px 40px -40px #fff
+    box-shadow: inset 0px -40px 40px -40px #fff
 }
 
 .not-listening {
-  box-shadow: inset 0px 0px 0px 0px #fff
+    box-shadow: inset 0px 0px 0px 0px #fff
 }
 
 .interim-result {
@@ -117,11 +118,20 @@ dt {
     margin-bottom: 20px;
 }
 
+.bottom-left, .bottom-right {
+    font-family: 'Open Sans', sans-serif;
+    position: absolute;
+    bottom: 50px;
+    width: 50%;
+}
+
 .bottom-left {
-  font-family: 'Open Sans', sans-serif;
-  position: absolute;
-  bottom: 20px;
-  left: 20px; }
+    left: 20px;
+}
+
+.bottom-right {
+    right: 20px;
+}
 
 .commands {
     width: 450px;
@@ -138,19 +148,22 @@ ul.calendar {
 }
 
 .calendar .event {
-  margin-bottom: 10px; }
+    margin-bottom: 10px;
+}
+
 .calendar span {
-  display: inline-block; }
-  .calendar span.day {
+	display: inline-block;
+}
+
+.calendar .day {
+    display: none;
     font-weight: bold;
     vertical-align: top;
-    margin-bottom: 8px; }
-  .calendar span.summary {
-    max-width: 400px;
-    display: block; }
+}
 
-.day-marker {
-	margin-top: 30px;
+.calendar span.summary {
+  font-size: 25px;
+  max-width: 400px;
 }
 .day-marker .day {
 	display: block;
@@ -168,10 +181,23 @@ ul.calendar {
   color: #90F487; }
 .calendar .event-details.calendar3 {
   color: #E7C9FF; }
+.calendar-name {
+  display: none;
+}
 
 .fuel:after {
   display: none; }
 
+.day-marker {
+	margin-top: 30px;
+}
+
+.day-marker .day {
+	display: block;
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
 .fuel span {
   font-size: 26px;
   max-width: 50%;
@@ -182,9 +208,11 @@ ul.calendar {
     font-size: 38px; }
 
 .weather {
-  margin-left: auto;
-  text-align: right;
-  width: 230px; }
+    margin-left: auto;
+    display: inline-block;
+    text-align: right;
+    width: 230px;
+}
 
 .weather-today .temperature {
     font-size: 60px;
@@ -211,7 +239,7 @@ ul.calendar {
 
 .weather-week .temperature {
     display: inline-block;
-    width: 60px; }
+    width: 50px; }
     .weather-week .temperature.temperature-min {
       color: #BCDDFF; }
     .weather-week .temperature.temperature-max {
@@ -223,29 +251,40 @@ ul.calendar {
 }
 
 .fitbit {
-  height: 100%; }
+    height: 100%;
+}
 
 .fitbit-title {
-  margin-right: 10px;
-  font-size: 24px; }
+    margin-right: 10px;
+    font-size: 24px;
+}
 
 .fitbit-subtitle {
-  margin-right: 10px;
-  font-size: 20px; }
+    margin-right: 10px;
+    font-size: 20px;
+}
 
 .fitbit-item {
-  color: #ccc;
-  margin-right: 10px;
-  font-size: 16px; }
+    color: #ccc;
+    margin-right: 10px;
+    font-size: 16px;
+}
 
 .fitbit-badge {
-  width: 16px;
-  height: 16px; }
+    width: 16px;
+    height: 16px;
+}
 
 .fitbit-main {
-  display: inline-block;
-  margin-right: 10px;
-  width: 450px; }
+    display: inline-block;
+    margin-right: 10px;
+    width: 450px;
+}
+
+.playing-track img {
+    float: left;
+    margin-right: 5px;
+}
 
 .traffic-information, .stock-information {
     text-align: right;
@@ -258,38 +297,51 @@ ul.calendar {
 }
 
 @keyframes reduce-dashoffset {
-  to {
-    stroke-dashoffset: 0; } }
+    to {
+        stroke-dashoffset: 0;
+    }
+
+}
+
 @keyframes increase-dashoffset {
-  from {
-    stroke-dashoffset: 0; } }
+    from {
+        stroke-dashoffset: 0;
+    }
+
+}
+
 .timer {
     font-size: 120px;
     position: relative;
 }
 
 .timer-circle {
-  width: 3.25em;
-  height: 3.25em;
-  transform: rotate(-90deg) scaleY(-1);
-  margin: 20px auto;
-  display: block; }
-  .timer-circle .background,
-  .timer-circle .progress {
+    width: 3.25em;
+    height: 3.25em;
+    transform: rotate(-90deg) scaleY(-1);
+    margin: 20px auto;
+    display: block;
+}
+
+.timer-circle .background,
+.timer-circle .progress {
     r: 1.525em;
     cx: 1.625em;
     cy: 1.625em;
     stroke-width: 0.1em;
     fill: none;
-    stroke: #222; }
-  .timer-circle .progress {
+    stroke: #222;
+}
+
+.timer-circle .progress {
     stroke-dasharray: 10.2101761239em;
     stroke-dashoffset: 10.2101761239em;
     stroke-linecap: round;
     animation-name: increase-dashoffset;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
-    stroke: white; }
+    stroke: white;
+}
 
 .timer-countdown,
 .timer-duration {
@@ -343,27 +395,27 @@ ul.calendar {
     overflow: hidden;
 }
 
-video {
-  width: 100%;
-  height: 680px;
-  border: none;
-  /* If you want to make the video black and white
+.video {
+    width: 100%;
+    height: 680px;
+    border: none;
+    /* If you want to make the video black and white
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
-    */
-}
+    */}
 
 .sc-container {
-	margin:auto;
-	-webkit-filter: grayscale(70%);
-	filter: grayscale(70%);
-	font-family: bold;
+    margin: auto;
+    -webkit-filter: grayscale(70%);
+    filter: grayscale(70%);
+    font-family: bold;
 }
+
 .scWaveform {
-	background-color: #000000;
-	width: 500px;
-	-webkit-filter: invert(100%);
-	filter: invert(100%);
+    background-color: #000000;
+    width: 500px;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
 
 .color-block {
@@ -380,11 +432,18 @@ video {
 
 /* Animations */
 .fade.ng-hide {
-  opacity: 0; }
-.fade.ng-hide-remove, .fade.ng-hide-add {
-  display: block !important; }
+    opacity: 0;
+}
+
+.fade.ng-hide-remove,
+.fade.ng-hide-add {
+    display: block !important;
+}
+
 .fade.ng-hide-remove {
-  transition: all ease 1500ms; }
+    transition: all ease 1500ms;
+}
+
 .fade.ng-hide-add {
     transition: all ease 500ms;
 }
@@ -450,8 +509,14 @@ video {
 }
 
 .xkcd {
-  -webkit-filter: invert(100%);
-  max-width: 100%; }
+    -webkit-filter: invert(100%);
+    max-width: 100%;
+}
+
+.news {
+    height: 75px; 
+    margin-bottom: 5px;
+}
 
 .tram {
   background: black;
@@ -492,17 +557,14 @@ video {
           text-align: right; }
         .tram ul li span.destination {
           width: 57%; }
-
-.news {
-  height: 75px;
-  margin-bottom: 5px; }
-
 .news-title {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
-  margin-bottom: 5px; }
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
 
 .news-content {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 20px;
-  margin-bottom: 55px; }
+    font-family: 'Open Sans', sans-serif;
+    font-size: 20px;
+    margin-bottom: 55px;
+}
