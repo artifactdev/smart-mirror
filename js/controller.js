@@ -13,7 +13,6 @@
             CalendarService,
             ComicService,
             GiphyService,
-            TrafficService,
             TimerService,
             ReminderService,
             SearchService,
@@ -252,7 +251,7 @@
                 registerRefreshInterval(greetingUpdater, 60);
             }
 
-            var refreshTrafficData = function() {
+            /*var refreshTrafficData = function() {
                 TrafficService.getDurationForTrips().then(function(tripsWithTraffic) {
                     console.log("Traffic", tripsWithTraffic);
                     //Todo this needs to be an array of traffic objects -> $trips[]
@@ -264,7 +263,7 @@
 
             if(typeof config.traffic !== 'undefined'){
                 registerRefreshInterval(refreshTrafficData, config.traffic.refreshInterval || 5);
-            }
+            }*/
 
             var refreshComic = function () {
                 console.log("Refreshing comic");
@@ -307,7 +306,7 @@
               }, function(error) {
                 console.log(error);
               });
-            }    
+            }
 
             if (typeof config.stock !== 'undefined' && config.stock.names.length) {
               registerRefreshInterval(getStock, 30);
@@ -341,7 +340,7 @@
 
             refreshRss();
             $interval(refreshRss, config.rss.refreshInterval * 60000);
-            
+
             updateNews();
             $interval(updateNews, 8000);  // cycle through news every 8 seconds
 
@@ -623,17 +622,17 @@
 
             var resetCommandTimeout;
             //Register callbacks for Annyang and the Keyword Spotter
-            SpeechService.registerCallbacks({
+            SpeechService.init({
                 listening : function(listening){
                     $scope.listening = listening;
                 },
-                interimResult : function(interimResult){
-                    $scope.interimResult = interimResult;
+                partialResult : function(result){
+                    $scope.partialResult = result;
                     $timeout.cancel(resetCommandTimeout);
                 },
-                result : function(result){
+                finalResult : function(result){
                     if(typeof result !== 'undefined'){
-                        $scope.interimResult = result[0];
+                        $scope.partialResult = result;
                         resetCommandTimeout = $timeout(restCommand, 5000);
                     }
                 },
@@ -641,10 +640,6 @@
                     console.log(error);
                     if(error.error == "network"){
                         $scope.speechError = "Google Speech Recognizer: Network Error (Speech quota exceeded?)";
-                        SpeechService.abort();
-                    } else {
-                        // Even if it isn't a network error, stop making requests
-                        SpeechService.abort();
                     }
                 }
             });
