@@ -80,7 +80,7 @@ dt {
     box-shadow: inset 0px 0px 0px 0px #fff
 }
 
-.interim-result {
+.partial-result {
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -210,7 +210,7 @@ ul.calendar {
 
 .weather {
     margin-left: auto;
-    display: inline-block;
+    display: block;
     text-align: right;
     width: 280px;
 }

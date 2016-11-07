@@ -31,7 +31,7 @@
         $scope.user = {};
         $scope.shownews = true;
         $scope.commands = [];
-        $scope.interimResult = $translate.instant('home.commands');
+        $scope.partialResult = $translate.instant('home.commands');
         $scope.layoutName = 'main';
         $scope.fitbitEnabled = false;
         $scope.config = config;
@@ -90,6 +90,30 @@
         getTramData();
         $interval(getTramData, 20000);
 
+        var resetCommandTimeout;
+        //Initialize the speech service
+        SpeechService.init({
+            listening : function(listening){
+                $scope.listening = listening;
+            },
+            partialResult : function(result){
+                $scope.partialResult = result;
+                $timeout.cancel(resetCommandTimeout);
+            },
+            finalResult : function(result){
+                if(typeof result !== 'undefined'){
+                    $scope.partialResult = result;
+                    resetCommandTimeout = $timeout(restCommand, 5000);
+                }
+            },
+            error : function(error){
+                console.log(error);
+                if(error.error == "network"){
+                    $scope.speechError = "Google Speech Recognizer: Network Error (Speech quota exceeded?)";
+                }
+            }
+        });
+
         //Update the time
         function updateTime(){
             $scope.date = new moment();
@@ -106,7 +130,7 @@
         // Reset the command text
         var restCommand = function(){
             $translate('home.commands').then(function (translation) {
-                $scope.interimResult = translation;
+                $scope.partialResult = translation;
             });
         };
 
